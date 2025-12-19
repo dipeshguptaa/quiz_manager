@@ -83,13 +83,11 @@ GEM
     date (3.5.1)
     erubi (1.13.1)
     ffi (1.17.2-arm64-darwin)
+    ffi (1.17.2-x86_64-linux-gnu)
     globalid (1.3.0)
       activesupport (>= 6.1)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
-    jbuilder (2.13.0)
-      actionview (>= 5.0.0)
-      activesupport (>= 5.0.0)
     listen (3.9.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -121,7 +119,10 @@ GEM
     nio4r (2.7.5)
     nokogiri (1.18.10-arm64-darwin)
       racc (~> 1.4)
+    nokogiri (1.18.10-x86_64-linux-gnu)
+      racc (~> 1.4)
     pg (1.6.2-arm64-darwin)
+    pg (1.6.2-x86_64-linux)
     pry (0.15.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -197,9 +198,6 @@ GEM
     thor (1.4.0)
     tilt (2.6.1)
     timeout (0.6.0)
-    turbolinks (5.2.1)
-      turbolinks-source (~> 5.2)
-    turbolinks-source (5.2.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     web-console (4.2.1)
@@ -227,12 +225,12 @@ GEM
 
 PLATFORMS
   arm64-darwin-24
+  x86_64-linux
 
 DEPENDENCIES
   bootsnap (>= 1.4.4)
   byebug
   capybara (>= 3.26)
-  jbuilder (~> 2.7)
   listen (~> 3.3)
   pg (~> 1.1)
   pry
@@ -240,7 +238,6 @@ DEPENDENCIES
   rails (~> 6.1.7, >= 6.1.7.6)
   sass-rails (>= 6)
   selenium-webdriver (>= 4.0.0.rc1)
-  turbolinks (~> 5)
   tzinfo-data
   web-console (>= 4.1.0)
   webdrivers

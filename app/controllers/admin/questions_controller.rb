@@ -55,8 +55,16 @@ class Admin::QuestionsController < Admin::BaseController
 
   def assign_correct_option
     return unless params[:correct_option_temp]
-    index = params[:correct_option_temp].to_i
-    option = @question.options[index]
+
+    if @question.true_false?
+      return unless %w[True False].include?(params[:correct_option_temp])
+      option = @question.options.find_or_create_by(content: params[:correct_option_temp])
+    else
+      key = params[:correct_option_temp].to_s
+      option_attrs = params.dig(:question, :options_attributes, key)
+      option = @question.options.find_by(content: option_attrs[:content]) if option_attrs
+    end
+
     @question.update_column(:correct_option_id, option.id) if option
   end
 end

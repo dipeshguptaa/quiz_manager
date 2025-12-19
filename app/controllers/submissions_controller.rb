@@ -25,6 +25,11 @@ class SubmissionsController < ApplicationController
   end
 
   def show
-    @submission = Submission.includes(quiz: { questions: :options }, answers: :question).find(params[:id])
+    @submission = Submission.includes(quiz: { questions: :options }, answers: :question).find_by(id: params[:id])
+
+    if @submission.nil?
+      redirect_to root_path, alert: "Submission not found"
+      return
+    end
   end
 end

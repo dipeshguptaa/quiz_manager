@@ -11,5 +11,7 @@ module QuizManager
 
     config.time_zone = "Asia/Kolkata"
     config.active_record.default_timezone = :utc
+
+    config.assets.initialize_on_precompile = false
   end
 end

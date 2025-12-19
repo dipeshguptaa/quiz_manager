@@ -6,5 +6,14 @@ class Question < ApplicationRecord
 
   enum question_type: { mcq: 0, true_false: 1, short_text: 2 }
 
-  validates :question_text, presence: true
+  after_save :ensure_true_false_options
+
+  private
+
+  def ensure_true_false_options
+    return unless true_false?
+
+    options.destroy_all
+    options.create!([{ content: "True" }, { content: "False" }])
+  end
 end

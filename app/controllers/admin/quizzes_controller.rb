@@ -16,6 +16,10 @@ class Admin::QuizzesController < Admin::BaseController
     end
   end
 
+  def show
+    @quiz = Quiz.find(params[:id])
+    @questions = @quiz.questions.order(:position)
+  end
   def edit
     @quiz = Quiz.find(params[:id])
   end

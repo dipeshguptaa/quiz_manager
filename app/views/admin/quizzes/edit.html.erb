@@ -1,4 +1,19 @@
-<div class="max-w-3xl mx-auto px-6 py-10">
-  <h1 class="text-2xl font-semibold mb-6">Edit Quiz</h1>
-  <%= render "form" %>
+<div class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-8 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-3xl mx-auto">
+    <div class="mb-8">
+      <%= link_to admin_quizzes_path, class: "inline-flex items-center text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors" do %>
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+        Back to Quizzes
+      <% end %>
+      <h1 class="mt-4 text-3xl font-bold text-slate-900">
+        Edit Quiz
+      </h1>
+      <p class="mt-2 text-sm text-slate-600">
+        Update quiz details and settings
+      </p>
+    </div>
+    <%= render "form" %>
+  </div>
 </div>

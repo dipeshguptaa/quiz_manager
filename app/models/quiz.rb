@@ -3,4 +3,13 @@ class Quiz < ApplicationRecord
   has_many :submissions, dependent: :destroy
 
   validates :title, presence: true
+  validate :must_have_at_least_one_question, if: :published?
+
+  private
+
+  def must_have_at_least_one_question
+    if questions.blank?
+      errors.add(:base, "Quiz must have at least one question before publishing")
+    end
+  end
 end

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin | Quiz Manager</title>
+  <%= csrf_meta_tags %>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100">
+  <nav class="bg-white shadow-sm">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex space-x-6">
+      <%= link_to "Dashboard", admin_root_path, class: "font-medium" %>
+      <%= link_to "Quizzes", admin_quizzes_path, class: "font-medium" %>
+      <%= link_to "Submissions", admin_submissions_path, class: "font-medium" %>
+    </div>
+  </nav>
+
+  <%= yield %>
+</body>
+</html>

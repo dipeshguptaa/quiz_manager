@@ -4,6 +4,7 @@ Rails.application.routes.draw do
       resources :questions
     end
     resources :submissions, only: [:index, :show]
+    root "dashboard#index"
   end
 
   resources :quizzes, only: [:index, :show]

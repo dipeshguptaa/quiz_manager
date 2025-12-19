@@ -1,0 +1,33 @@
+<div class="max-w-6xl mx-auto px-6 py-10">
+  <h1 class="text-2xl font-semibold mb-6">Quiz Submissions</h1>
+
+  <div class="bg-white rounded-lg shadow overflow-hidden">
+    <table class="w-full text-left">
+      <thead class="bg-gray-100 text-sm">
+        <tr>
+          <th class="px-4 py-3">Quiz</th>
+          <th class="px-4 py-3">Score</th>
+          <th class="px-4 py-3">Submitted At</th>
+          <th class="px-4 py-3"></th>
+        </tr>
+      </thead>
+
+      <tbody class="divide-y">
+        <% @submissions.each do |submission| %>
+          <tr>
+            <td class="px-4 py-3"><%= submission.quiz.title %></td>
+            <td class="px-4 py-3">
+              <%= submission.score %> / <%= submission.total_questions %>
+            </td>
+            <td class="px-4 py-3 text-sm text-gray-500">
+              <%= submission.submitted_at.strftime("%d %b %Y, %I:%M %p") %>
+            </td>
+            <td class="px-4 py-3 text-right">
+              <%= link_to "View", admin_submission_path(submission), class: "text-indigo-600 text-sm" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

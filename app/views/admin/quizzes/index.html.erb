@@ -1,0 +1,49 @@
+<div class="max-w-6xl mx-auto px-6 py-10">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-semibold">Quizzes</h1>
+
+    <%= link_to "New Quiz",
+        new_admin_quiz_path,
+        class: "bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-500" %>
+  </div>
+
+  <% if @quizzes.any? %>
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+      <table class="w-full text-left">
+        <thead class="bg-gray-100 text-sm">
+          <tr>
+            <th class="px-4 py-3">Title</th>
+            <th class="px-4 py-3">Status</th>
+            <th class="px-4 py-3">Actions</th>
+          </tr>
+        </thead>
+
+        <tbody class="divide-y">
+          <% @quizzes.each do |quiz| %>
+            <tr>
+              <td class="px-4 py-3 font-medium">
+                <%= quiz.title %>
+              </td>
+
+              <td class="px-4 py-3">
+                <span class="<%= quiz.published ? 'text-green-600' : 'text-gray-400' %> text-sm">
+                  <%= quiz.published ? "Published" : "Draft" %>
+                </span>
+              </td>
+
+              <td class="px-4 py-3 space-x-3">
+                <%= link_to "Questions", admin_quiz_questions_path(quiz), class: "text-indigo-600 text-sm" %>
+                <%= link_to "Edit", edit_admin_quiz_path(quiz), class: "text-indigo-600 text-sm" %>
+                <%= link_to "Delete", admin_quiz_path(quiz), method: :delete, data: { confirm: "Delete this quiz?" }, class: "text-red-600 text-sm" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div class="bg-white rounded-lg shadow p-6 text-gray-500">
+      No quizzes created yet.
+    </div>
+  <% end %>
+</div>

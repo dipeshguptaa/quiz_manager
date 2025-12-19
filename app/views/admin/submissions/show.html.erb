@@ -1,0 +1,26 @@
+<div class="max-w-3xl mx-auto px-6 py-10">
+  <h1 class="text-2xl font-semibold mb-4">Submission Details</h1>
+
+  <div class="bg-white rounded-lg shadow p-6 mb-6">
+    <p><strong>Quiz:</strong> <%= @submission.quiz.title %></p>
+    <p>
+      <strong>Score:</strong>
+      <%= @submission.score %> / <%= @submission.total_questions %>
+    </p>
+    <p class="text-sm text-gray-500">
+      Submitted at <%= @submission.submitted_at.strftime("%d %b %Y, %I:%M %p") %>
+    </p>
+  </div>
+
+  <% @submission.answers.each do |answer| %>
+    <div class="mb-6">
+      <p class="font-medium"><%= answer.question.question_text %></p>
+      <p class="text-sm">
+        Answer:
+        <span class="<%= answer.is_correct ? 'text-green-600' : 'text-red-600' %>">
+          <%= answer.option&.content || answer.answer_text %>
+        </span>
+      </p>
+    </div>
+  <% end %>
+</div>

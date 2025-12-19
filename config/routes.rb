@@ -1,3 +1,13 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  namespace :admin do
+    resources :quizzes do
+      resources :questions
+    end
+    resources :submissions, only: [:index, :show]
+  end
+
+  resources :quizzes, only: [:index, :show]
+  resources :submissions, only: [:create, :show]
+
+  root "quizzes#index"
 end

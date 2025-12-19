@@ -1,0 +1,42 @@
+class Admin::QuizzesController < Admin::BaseController
+  def index
+    @quizzes = Quiz.order(id: :desc)
+  end
+
+  def new
+    @quiz = Quiz.new
+  end
+
+  def create
+    @quiz = Quiz.new(quiz_params)
+    if @quiz.save
+      redirect_to admin_quizzes_path, notice: "Quiz created successfully"
+    else
+      render :new
+    end
+  end
+
+  def edit
+    @quiz = Quiz.find(params[:id])
+  end
+
+  def update
+    @quiz = Quiz.find(params[:id])
+    if @quiz.update(quiz_params)
+      redirect_to admin_quizzes_path, notice: "Quiz updated"
+    else
+      render :edit
+    end
+  end
+
+  def destroy
+    Quiz.find(params[:id]).destroy
+    redirect_to admin_quizzes_path
+  end
+
+  private
+
+  def quiz_params
+    params.require(:quiz).permit(:title, :description, :published)
+  end
+end

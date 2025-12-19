@@ -1,0 +1,30 @@
+<div class="max-w-3xl mx-auto px-6 py-10">
+  <h1 class="text-3xl font-semibold mb-2"><%= @quiz.title %></h1>
+  <p class="text-gray-600 mb-8"><%= @quiz.description %></p>
+
+  <%= form_with url: submissions_path, method: :post, local: true do %>
+    <%= hidden_field_tag :quiz_id, @quiz.id %>
+
+    <% @quiz.questions.each_with_index do |question, index| %>
+      <div class="mb-8">
+        <p class="font-medium mb-3">
+          <%= index + 1 %>. <%= question.question_text %>
+        </p>
+
+        <% if question.mcq? || question.true_false? %>
+          <% question.options.each do |option| %>
+            <label class="flex items-center mb-2 cursor-pointer">
+              <%= radio_button_tag "answers[#{question.id}]", option.id, false, class: "mr-2" %>
+              <span><%= option.content %></span>
+            </label>
+          <% end %>
+
+        <% elsif question.short_text? %>
+          <%= text_area_tag "answers[#{question.id}]", "", class: "w-full border rounded-md p-2", rows: 3 %>
+        <% end %>
+      </div>
+    <% end %>
+
+    <%= submit_tag "Submit Quiz", class: "bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-500" %>
+  <% end %>
+</div>

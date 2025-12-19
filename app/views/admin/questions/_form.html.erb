@@ -1,0 +1,41 @@
+<%= form_with model: [:admin, @quiz, @question], local: true do |f| %>
+  <div class="space-y-6">
+
+    <div>
+      <%= f.label :question_text, class: "block font-medium mb-1" %>
+      <%= f.text_area :question_text, rows: 3, class: "w-full border rounded-md p-2" %>
+    </div>
+
+    <div>
+      <%= f.label :question_type, class: "block font-medium mb-1" %>
+      <%= f.select :question_type, Question.question_types.keys.map { |k| [k.humanize, k] }, {}, class: "border rounded-md p-2 w-full" %>
+    </div>
+
+    <% if @question.mcq? || @question.true_false? %>
+      <div>
+        <p class="font-medium mb-2">Options</p>
+
+        <div class="space-y-2">
+          <%= f.fields_for :options do |of| %>
+            <div class="flex items-center space-x-2">
+              <%= of.text_field :content, class: "flex-1 border rounded-md p-2" %>
+
+              <%= of.check_box :_destroy %>
+              <span class="text-sm text-gray-500">Remove</span>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <div>
+        <%= f.label :correct_option_id, "Correct Option", class: "block font-medium mb-1" %>
+        <%= f.select :correct_option_id, @question.options.map { |o| [o.content, o.id] }, { include_blank: "Select correct option" }, class: "border rounded-md p-2 w-full" %>
+      </div>
+    <% end %>
+
+    <div>
+      <%= f.submit "Save Question", class: "bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-500" %>
+    </div>
+
+  </div>
+<% end %>

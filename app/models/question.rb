@@ -1,6 +1,7 @@
 class Question < ApplicationRecord
   belongs_to :quiz
   has_many :options, dependent: :destroy
+  has_many :answers, dependent: :destroy
   belongs_to :correct_option, class_name: "Option", optional: true
 
   accepts_nested_attributes_for :options, allow_destroy: true
@@ -9,7 +10,7 @@ class Question < ApplicationRecord
 
   validates :question_text, :question_type, presence: true
 
-  after_commit :ensure_true_false_options
+  after_commit :ensure_true_false_options, on: [:create, :update]
 
   private
 

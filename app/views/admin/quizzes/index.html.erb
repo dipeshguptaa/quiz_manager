@@ -32,7 +32,7 @@
               <td class="px-4 py-3 space-x-3">
                 <%= link_to "Questions", admin_quiz_questions_path(quiz), class: "text-indigo-600 text-sm" %>
                 <%= link_to "Edit", edit_admin_quiz_path(quiz), class: "text-indigo-600 text-sm" %>
-                <%= link_to "Delete", admin_quiz_path(quiz), method: :delete, data: { confirm: "Delete this quiz?" }, class: "text-red-600 text-sm" %>
+                <%= button_to "Delete", admin_quiz_path(quiz), method: :delete, data: { confirm: "Delete this quiz?" }, form: { class: "inline" }, class: "text-red-600 text-sm bg-transparent p-0 border-0 cursor-pointer" %>
               </td>
             </tr>
           <% end %>

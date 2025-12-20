@@ -23,7 +23,7 @@
         <div class="flex space-x-3">
           <%= link_to "Edit", edit_admin_quiz_question_path(@quiz, question), class: "text-indigo-600 text-sm" %>
 
-          <%= link_to "Delete", admin_quiz_question_path(@quiz, question), method: :delete, data: { confirm: "Delete this question?" }, class: "text-red-600 text-sm" %>
+          <%= button_to "Delete", admin_quiz_question_path(@quiz, question), method: :delete, data: { confirm: "Delete this question?" }, form: { class: "inline" }, class: "text-red-600 text-sm bg-transparent p-0 border-0 cursor-pointer" %>
         </div>
       </div>
     <% end %>

@@ -18,8 +18,7 @@ class Admin::SubmissionsController < Admin::BaseController
 
     @average_score =
       if @selected_quiz
-        total_score = base_scope.sum(:score)
-        total_questions = base_scope.sum(:total_questions)
+        total_score, total_questions = base_scope.pick("SUM(score)", "SUM(total_questions)")
         total_questions.positive? ?
           ((total_score.to_f / total_questions) * 100).round(1) :
           0

@@ -10,25 +10,23 @@ class Admin::SubmissionsController < Admin::BaseController
 
     @quizzes = Quiz.published.order(:title)
 
-    @submissions =
-      if @selected_quiz
-        @selected_quiz.submissions.includes(:quiz).order(submitted_at: :desc)
-      else
-        Submission.includes(:quiz).order(submitted_at: :desc)
-      end
+    base_scope = @selected_quiz ? Submission.where(quiz_id: @selected_quiz.id) : Submission.all
 
-    @total_count = @submissions.size
-    @today_count = @submissions.today.size
-    @week_count = @submissions.this_week.size
+    @total_count = @selected_quiz ? @selected_quiz.submissions_count : Submission.size
+    @today_count = base_scope.today.size
+    @week_count  = base_scope.this_week.size
+
     @average_score =
-      if @selected_quiz && @submissions.present?
-        total_score = @submissions.sum(:score)
-        total_questions = @submissions.sum(:total_questions)
-        total_questions.zero? ? 0 : ((total_score.to_f / total_questions) * 100).round(1)
-      else
-        0
+      if @selected_quiz
+        total_score = base_scope.sum(:score)
+        total_questions = base_scope.sum(:total_questions)
+        total_questions.positive? ?
+          ((total_score.to_f / total_questions) * 100).round(1) :
+          0
       end
-  end
+  
+    @submissions = base_scope.includes(:quiz).order(submitted_at: :desc)
+  end  
 
   def show
     @submission = Submission.includes(quiz: { questions: :options }, answers: :question).find(params[:id])

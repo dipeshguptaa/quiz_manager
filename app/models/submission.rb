@@ -1,5 +1,5 @@
 class Submission < ApplicationRecord
-  belongs_to :quiz
+  belongs_to :quiz, counter_cache: true
   has_many :answers, dependent: :destroy
 
   scope :today, -> { where('submitted_at >= ?', Time.zone.today.beginning_of_day) }

@@ -41,6 +41,6 @@ class Admin::QuizzesController < Admin::BaseController
   private
 
   def quiz_params
-    params.require(:quiz).permit(:title, :description, :published)
+    params.require(:quiz).permit(:title, :description, :published, :timer)
   end
 end

@@ -3,6 +3,7 @@ class Quiz < ApplicationRecord
   has_many :submissions, dependent: :destroy
 
   validates :title, presence: true
+  validates_numericality_of :timer
   validate :must_have_at_least_one_question, if: :published?
 
   private

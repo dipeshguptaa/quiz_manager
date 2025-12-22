@@ -15,6 +15,8 @@ class QuizzesController < ApplicationController
       redirect_to quizzes_path, alert: "This quiz is not published yet"
       return
     end
+
+    @quiz_questions = @quiz.questions
   end
   
 end

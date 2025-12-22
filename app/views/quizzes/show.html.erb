@@ -29,13 +29,16 @@
           <div>
             <p class="text-sm font-medium text-blue-900">Instructions</p>
             <p class="text-sm text-blue-700 mt-1">Answer all questions to the best of your ability. Select one option for multiple choice questions. Once submitted, you'll receive your results.</p>
+            <% if @quiz.timer.present? %>
+              <p class="text-sm text-red-700 mt-1 font-medium" id="quiz_timer" data-timer="<%= @quiz.timer %>"></p>
+            <% end %>
           </div>
         </div>
       </div>
     </div>
     <%= form_with url: submissions_path, method: :post, local: true, class: "space-y-6" do %>
       <%= hidden_field_tag :quiz_id, @quiz.id %>
-      <% @quiz.questions.each_with_index do |question, index| %>
+      <% @quiz_questions.shuffle&.each_with_index do |question, index| %>
         <div class="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
           <div class="bg-slate-50 px-6 py-4 border-b border-slate-200">
             <div class="flex items-start gap-4">
@@ -89,3 +92,36 @@
     <% end %>
   </div>
 </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const timerEl = document.getElementById("quiz_timer");
+    if (!timerEl) return;
+
+    const form = document.querySelector("form");
+    let remainingMinutes = parseInt(timerEl.dataset.timer, 10);
+
+    if (isNaN(remainingMinutes) || remainingMinutes <= 0) return;
+
+    let remainingSeconds = remainingMinutes * 60;
+
+    function updateTimer() {
+      const minutes = Math.floor(remainingSeconds / 60);
+      const seconds = remainingSeconds % 60;
+
+      timerEl.textContent =
+        `Time remaining: ${minutes}:${seconds.toString().padStart(2, "0")} minutes`;
+
+      if (remainingSeconds <= 0) {
+        clearInterval(interval);
+        timerEl.textContent = "Time is up! Submitting quiz...";
+        form.submit();
+      }
+
+      remainingSeconds--;
+    }
+
+    updateTimer();
+    const interval = setInterval(updateTimer, 1000);
+  });
+</script>

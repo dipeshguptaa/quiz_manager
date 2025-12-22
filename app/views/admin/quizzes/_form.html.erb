@@ -44,10 +44,14 @@
 
       <div class="space-y-2">
         <%= f.label :timer, class: "block text-sm font-semibold text-slate-700" do %>
-          Timer (in Minutes)
-          <span class="text-red-500">*</span>
+          Timer (in minutes)
+          <span class="text-xs font-normal text-slate-500">(optional)</span>
         <% end %>
-        <%= f.number_field :timer, class: "w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-slate-900", placeholder: "Enter quiz timer...", required: true %>
+
+        <%= f.number_field :timer, min: 1, step: 1, class: "w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-slate-900", placeholder: "Leave blank for no timer" %>
+        <p class="text-xs text-slate-500">
+          If set, the quiz will auto-submit when the timer expires.
+        </p>
       </div>
 
       <div class="bg-slate-50 border border-slate-200 rounded-lg p-6">

@@ -12,7 +12,7 @@ class Admin::SubmissionsController < Admin::BaseController
 
     base_scope = @selected_quiz ? Submission.where(quiz_id: @selected_quiz.id) : Submission.all
 
-    @total_count = @selected_quiz ? @selected_quiz.submissions_count : Submission.size
+    @total_count = @selected_quiz ? @selected_quiz.submissions_count : Submission.count
     @today_count = base_scope.today.size
     @week_count  = base_scope.this_week.size
 

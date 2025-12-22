@@ -34,7 +34,7 @@
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
-                <%= pluralize(@quiz.questions.count, 'Question') %>
+                <%= pluralize(@quiz.questions_count, 'Question') %>
               </div>
               <div class="flex items-center">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -73,9 +73,9 @@
             Add Question
           <% end %>
         </div>
-        <% if @quiz.questions.any? %>
+        <% if @questions.any? %>
           <div class="space-y-4">
-            <% @quiz.questions.each_with_index do |question, index| %>
+            <% @questions.each_with_index do |question, index| %>
               <div class="group bg-slate-50 border border-slate-200 rounded-xl p-6 hover:border-indigo-300 hover:shadow-md transition-all">
                 <div class="flex items-start justify-between">
                   <div class="flex-1">
@@ -98,7 +98,7 @@
                           </span>
                           <% if question.mcq? %>
                             <span class="text-xs text-slate-500">
-                              <%= pluralize(question.options.count, 'option') %>
+                              <%= pluralize(question.options_count, 'option') %>
                             </span>
                           <% end %>
                         </div>

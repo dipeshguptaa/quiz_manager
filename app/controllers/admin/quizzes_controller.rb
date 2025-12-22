@@ -25,6 +25,7 @@ class Admin::QuizzesController < Admin::BaseController
     @quiz = Quiz.find(params[:id])
     @questions = @quiz.questions.order(:position)
   end
+
   def edit
     @quiz = Quiz.find(params[:id])
   end

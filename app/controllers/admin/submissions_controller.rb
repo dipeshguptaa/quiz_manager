@@ -21,7 +21,7 @@ class Admin::SubmissionsController < Admin::BaseController
     @today_count = @submissions.today.size
     @week_count = @submissions.this_week.size
     @average_score =
-      if @selected_quiz && @submissions.any?
+      if @selected_quiz && @submissions.present?
         total_score = @submissions.sum(:score)
         total_questions = @submissions.sum(:total_questions)
         total_questions.zero? ? 0 : ((total_score.to_f / total_questions) * 100).round(1)

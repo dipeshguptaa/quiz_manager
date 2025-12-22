@@ -11,13 +11,16 @@ class Question < ApplicationRecord
   validates :question_text, :question_type, presence: true
 
   after_commit :ensure_true_false_options, on: [:create, :update]
-
+  
   private
 
   def ensure_true_false_options
     return unless true_false?
-    return if options.exists?
 
-    options.create!([{ content: "True" }, { content: "False" }])
+    options.where.not(content: ["True", "False"]).destroy_all
+
+    ["True", "False"].each do |value|
+      options.find_or_create_by!(content: value)
+    end
   end
 end

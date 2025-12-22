@@ -1,5 +1,5 @@
 class Question < ApplicationRecord
-  belongs_to :quiz
+  belongs_to :quiz, counter_cache: true
   has_many :options, dependent: :destroy
   has_many :answers, dependent: :destroy
   belongs_to :correct_option, class_name: "Option", optional: true

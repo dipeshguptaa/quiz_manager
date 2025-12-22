@@ -1,6 +1,11 @@
 class Admin::QuizzesController < Admin::BaseController
+
   def index
-    @quizzes = Quiz.order(id: :desc)
+    @quizzes = Quiz.order(id: :desc).load
+
+    @total_quizzes = @quizzes.size
+    @published_count = @quizzes.count(&:published?)
+    @draft_count = @total_quizzes - @published_count
   end
 
   def new

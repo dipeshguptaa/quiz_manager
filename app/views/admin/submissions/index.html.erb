@@ -1,33 +1,238 @@
-<div class="max-w-6xl mx-auto px-6 py-10">
-  <h1 class="text-2xl font-semibold mb-6">Quiz Submissions</h1>
+<div class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="mb-8">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900">Quiz Submissions</h1>
+          <p class="mt-1 text-sm text-gray-500">
+            Track and review all quiz submissions from users
+          </p>
+        </div>
+      </div>
+    </div>
 
-  <div class="bg-white rounded-lg shadow overflow-hidden">
-    <table class="w-full text-left">
-      <thead class="bg-gray-100 text-sm">
-        <tr>
-          <th class="px-4 py-3">Quiz</th>
-          <th class="px-4 py-3">Score</th>
-          <th class="px-4 py-3">Submitted At</th>
-          <th class="px-4 py-3"></th>
-        </tr>
-      </thead>
+  <div class="mb-6 flex items-center gap-4">
+    <%= form_with url: admin_submissions_path, method: :get, local: true, class: "flex items-center gap-3" do %>
+      <label class="text-sm font-medium text-gray-600">
+        Filter by Quiz
+      </label>
 
-      <tbody class="divide-y">
-        <% @submissions.each do |submission| %>
-          <tr>
-            <td class="px-4 py-3"><%= submission.quiz.title %></td>
-            <td class="px-4 py-3">
-              <%= submission.score %> / <%= submission.total_questions %>
-            </td>
-            <td class="px-4 py-3 text-sm text-gray-500">
-              <%= submission.submitted_at.strftime("%d %b %Y, %I:%M %p") %>
-            </td>
-            <td class="px-4 py-3 text-right">
-              <%= link_to "View", admin_submission_path(submission), class: "text-indigo-600 text-sm" %>
-            </td>
-          </tr>
+      <select name="quiz_id" onchange="this.form.submit()" class="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500"
+      >
+        <option value="">All Quizzes</option>
+        <% @quizzes.each do |quiz| %>
+          <option value="<%= quiz.id %>" <%= "selected" if quiz == @selected_quiz %>>
+            <%= quiz.title %>
+          </option>
         <% end %>
-      </tbody>
-    </table>
+      </select>
+
+      <% if params[:quiz_id].present? %>
+        <%= link_to "Clear", admin_submissions_path, class: "text-sm text-indigo-600 hover:underline" %>
+      <% end %>
+    <% end %>
+  </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+              <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm font-medium text-gray-500">Total Submissions</p>
+            <p class="text-2xl font-bold text-gray-900"><%= @total_count %></p>
+          </div>
+        </div>
+      </div>
+
+      <% if @selected_quiz %>
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+              </div>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-500">Avg Score</p>
+              <p class="text-2xl font-bold text-gray-900">
+                <%= @average_score %>%
+              </p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+              <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm font-medium text-gray-500">Today</p>
+            <p class="text-2xl font-bold text-gray-900">
+              <%= @today_count %>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+              <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+              </svg>
+            </div>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm font-medium text-gray-500">This Week</p>
+            <p class="text-2xl font-bold text-gray-900">
+              <%= @week_count %>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <% if @submissions.present? %>
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+          <div class="grid grid-cols-12 gap-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
+            <div class="col-span-4">Quiz</div>
+            <div class="col-span-2">Score</div>
+            <div class="col-span-2">Performance</div>
+            <div class="col-span-3">Submitted</div>
+            <div class="col-span-1 text-right">Action</div>
+          </div>
+        </div>
+
+        <div class="divide-y divide-gray-200">
+          <% @submissions.each do |submission| %>
+            <div class="px-6 py-4 hover:bg-gray-50 transition-colors duration-150">
+              <div class="grid grid-cols-12 gap-4 items-center">
+                <div class="col-span-4">
+                  <div class="flex items-start">
+                    <div class="flex-shrink-0 mt-1">
+                      <div class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="ml-4 min-w-0 flex-1">
+                      <%= link_to admin_quiz_path(submission.quiz), class: "block hover:text-indigo-600 transition-colors" do %>
+                        <p class="text-sm font-semibold text-gray-900 truncate">
+                          <%= submission.quiz.title %>
+                        </p>
+                      <% end %>
+                      <p class="text-xs text-gray-500 mt-0.5">
+                        <%= pluralize(submission.total_questions, 'question') %>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-span-2">
+                  <div class="flex items-center">
+                    <div class="text-lg font-bold text-gray-900">
+                      <%= submission.score %>
+                    </div>
+                    <div class="text-sm text-gray-500 ml-1">
+                      / <%= submission.total_questions %>
+                    </div>
+                  </div>
+                  <div class="mt-1">
+                    <div class="w-full bg-gray-200 rounded-full h-1.5">
+                      <div class="bg-gradient-to-r from-indigo-500 to-purple-600 h-1.5 rounded-full transition-all duration-500" style="width: <%= submission.percentage_score %>%"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-span-2">
+                  <% percentage = submission.percentage_score %>
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold <%= 
+                    case percentage
+                    when 90..100 then 'bg-green-100 text-green-800'
+                    when 70...90 then 'bg-blue-100 text-blue-800'
+                    when 50...70 then 'bg-amber-100 text-amber-800'
+                    else 'bg-red-100 text-red-800'
+                    end
+                  %>">
+                    <%= submission.performance_level[:admin_label] %>
+                  </span>
+                  <div class="text-xs text-gray-500 mt-1">
+                    <%= percentage.round(1) %>%
+                  </div>
+                </div>
+
+                <div class="col-span-3">
+                  <div class="flex items-center text-sm text-gray-900">
+                    <svg class="w-4 h-4 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                    <div>
+                      <div class="font-medium">
+                        <%= submission.submitted_at.strftime("%d %b %Y") %>
+                      </div>
+                      <div class="text-xs text-gray-500">
+                        <%= submission.submitted_at.strftime("%I:%M %p") %>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="text-xs text-gray-500 mt-1 ml-6">
+                    <%= time_ago_in_words(submission.submitted_at) %> ago
+                  </div>
+                </div>
+
+                <div class="col-span-1 text-right">
+                  <%= link_to admin_submission_path(submission), class: "inline-flex items-center justify-center px-3 py-2 border border-indigo-300 text-sm font-medium rounded-lg text-indigo-700 bg-white hover:bg-indigo-50 transition-all shadow-sm hover:shadow-md" do %>
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                    </svg>
+                    View
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+    <% else %>
+      <!-- Empty State -->
+      <div class="bg-white rounded-xl shadow-sm border-2 border-dashed border-gray-300 p-12">
+        <div class="text-center">
+          <div class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+            <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">No submissions yet</h3>
+          <p class="text-gray-500 mb-6 max-w-sm mx-auto">
+            Quiz submissions will appear here once users start taking your quizzes.
+          </p>
+          <%= link_to admin_quizzes_path, class: "inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 shadow-sm hover:shadow-md transition-all duration-200" do %>
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+            View Quizzes
+          <% end %>
+        </div>
+      </div>
+    <% end %>
   </div>
 </div>

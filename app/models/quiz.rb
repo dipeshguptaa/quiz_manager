@@ -7,6 +7,9 @@ class Quiz < ApplicationRecord
 
   validate :must_have_at_least_one_question, if: :published?
 
+  scope :published, -> { where(published: true) }
+  scope :drafts,    -> { where(published: false) }
+
   private
 
   def must_have_at_least_one_question

@@ -7,8 +7,9 @@ Rails.application.routes.draw do
     root "dashboard#index"
   end
 
-  resources :quizzes, only: [:index, :show]
+  resources :quizzes, only: [:show]
   resources :submissions, only: [:create, :show]
 
+  get '/quizzes', to: redirect('/', status: 301)
   root "quizzes#index"
 end
